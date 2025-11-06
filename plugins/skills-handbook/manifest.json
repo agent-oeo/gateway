@@ -1,0 +1,169 @@
+{
+  "id": "skills-handbook",
+  "description": "Skills Handbook plugin for enhancing AI responses with positive and negative examples from Qdrant memory",
+  "credentials": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "label": "Qdrant API Key",
+        "description": "Your Qdrant API key for authentication (optional for local Qdrant)",
+        "encrypted": true
+      },
+      "endpoint": {
+        "type": "string",
+        "label": "Qdrant Endpoint",
+        "description": "Your Qdrant instance URL (e.g., https://your-cluster.qdrant.io or http://localhost:6333)",
+        "encrypted": false
+      },
+      "openaiApiKey": {
+        "type": "string",
+        "label": "OpenAI API Key",
+        "description": "Your OpenAI API key for generating embeddings",
+        "encrypted": true
+      }
+    },
+    "required": ["endpoint", "openaiApiKey"]
+  },
+  "functions": [
+    {
+      "name": "Memory Retrieval",
+      "id": "handbook",
+      "supportedHooks": ["beforeRequestHook"],
+      "type": "transformer",
+      "description": [
+        {
+          "type": "subHeading",
+          "text": "Retrieves relevant positive and negative examples from Qdrant and adds them as context to enhance AI responses with learned behaviors"
+        }
+      ],
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "positiveCollectionName": {
+            "type": "string",
+            "label": "Positive Examples Collection",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Name of the Qdrant collection containing positive examples"
+              }
+            ],
+            "default": "skills-handbook-positive"
+          },
+          "negativeCollectionName": {
+            "type": "string",
+            "label": "Negative Examples Collection",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Name of the Qdrant collection containing negative examples"
+              }
+            ],
+            "default": "skills-handbook-negative"
+          },
+          "topK": {
+            "type": "number",
+            "label": "Number of Examples",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Number of examples to retrieve from each collection"
+              }
+            ],
+            "default": 3
+          },
+          "scoreThreshold": {
+            "type": "number",
+            "label": "Similarity Threshold",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Minimum similarity score (0.0-1.0) for retrieved examples"
+              }
+            ],
+            "default": 0.7
+          },
+          "includePositive": {
+            "type": "boolean",
+            "label": "Include Positive Examples",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Whether to include positive examples in the context"
+              }
+            ],
+            "default": true
+          },
+          "includeNegative": {
+            "type": "boolean",
+            "label": "Include Negative Examples",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Whether to include negative examples in the context"
+              }
+            ],
+            "default": true
+          },
+          "positivePrefix": {
+            "type": "string",
+            "label": "Positive Examples Prefix",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "String to prepend to the positive examples section"
+              }
+            ],
+            "default": "\n<positive_examples>\nThese are examples of correct usage:\n"
+          },
+          "positiveSuffix": {
+            "type": "string",
+            "label": "Positive Examples Suffix",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "String to append to the positive examples section"
+              }
+            ],
+            "default": "\n</positive_examples>"
+          },
+          "negativePrefix": {
+            "type": "string",
+            "label": "Negative Examples Prefix",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "String to prepend to the negative examples section"
+              }
+            ],
+            "default": "\n<negative_examples>\nThese are examples of incorrect usage to avoid:\n"
+          },
+          "negativeSuffix": {
+            "type": "string",
+            "label": "Negative Examples Suffix",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "String to append to the negative examples section"
+              }
+            ],
+            "default": "\n</negative_examples>"
+          },
+          "timeout": {
+            "type": "number",
+            "label": "Timeout",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Timeout for Qdrant API calls in milliseconds"
+              }
+            ],
+            "default": 10000
+          }
+        },
+        "required": []
+      }
+    }
+  ]
+}

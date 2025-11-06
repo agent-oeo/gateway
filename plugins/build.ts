@@ -3,6 +3,11 @@ import fs from 'fs';
 
 const pluginsEnabled = conf.plugins_enabled;
 
+// Helper function to convert hyphenated strings to camelCase for valid JS identifiers
+const toCamelCase = (str: string): string => {
+  return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+};
+
 let importStrings: any = [];
 let funcStrings: any = {};
 let funcs: any = {};
@@ -14,7 +19,7 @@ for (const plugin of pluginsEnabled) {
     ...importStrings,
     ...functions.map(
       (func: any) =>
-        `import { handler as ${manifest.id}${func} } from "./${plugin}/${func}"`
+        `import { handler as ${toCamelCase(manifest.id)}${func} } from "./${plugin}/${func}"`
     ),
   ];
 
@@ -25,7 +30,7 @@ for (const plugin of pluginsEnabled) {
 
   funcStrings[plugin] = [];
   for (let key in funcs[plugin]) {
-    funcStrings[plugin].push(`"${key}": ${manifest.id}${funcs[plugin][key]}`);
+    funcStrings[plugin].push(`"${key}": ${toCamelCase(manifest.id)}${funcs[plugin][key]}`);
   }
 }
 
