@@ -21,7 +21,7 @@ def call_portkey_itshub():
             "api_key": "dummy-key",
             "custom_host": "http://localhost:8108/v1",
             "inputMutators": [{
-                "custom.itsHub": {
+                "langfuse.itsHub": {
                     "budget": 2
                 }
             }]
@@ -75,7 +75,7 @@ def call_portkey_with_retry():
                 "attempts": 3  # Retry up to 3 times on failure
             },
             "inputMutators": [{
-                "custom.itsHub": {
+                "langfuse.itsHub": {
                     "budget": 2
                 }
             }]
@@ -108,7 +108,7 @@ def call_portkey_streaming():
             "api_key": "dummy-key",
             "custom_host": "http://localhost:8108/v1",
             "inputMutators": [{
-                "custom.itsHub": {
+                "langfuse.itsHub": {
                     "budget": 2
                 }
             }]

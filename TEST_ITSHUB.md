@@ -2,17 +2,23 @@
 
 ## Quick Test
 
-Run the automated test script:
+Run the Python examples to test the integration:
 
 ```bash
-node test-itshub-integration.js
+# Activate virtual environment
+source .venv/bin/activate
+
+# Run basic example
+python examples/python_portkey_basic.py
+
+# Run requests library example (includes retry and streaming tests)
+python examples/python_portkey_requests.py
 ```
 
-This script will:
-1. Test the direct ITS-Hub endpoint
-2. Test ITS-Hub through Portkey Gateway
-3. Compare the results
-4. Show you if the integration is working correctly
+These examples will:
+1. Test ITS-Hub through Portkey Gateway
+2. Show plugin execution details
+3. Demonstrate different features (basic, retry, streaming)
 
 ## Prerequisites
 
@@ -64,7 +70,11 @@ Wait for the message:
 ### 3. Run the Test (Terminal 3)
 
 ```bash
-node test-itshub-integration.js
+# Activate virtual environment
+source .venv/bin/activate
+
+# Run the example
+python examples/python_portkey_basic.py
 ```
 
 ## Expected Output
@@ -72,89 +82,62 @@ node test-itshub-integration.js
 If everything is working correctly, you should see:
 
 ```
-████████████████████████████████████████████████████████████
-  ITS-Hub + Portkey Gateway Integration Test
-████████████████████████████████████████████████████████████
-
 ============================================================
-TEST 1: Direct ITS-Hub Endpoint
+Portkey Gateway - Python Examples
 ============================================================
 
-Request URL: http://localhost:8108/v1/chat/completions
-Budget: 2
-Model: gpt-4.1
-Question: "what is the capital of england"
-
-✅ SUCCESS
-Status: 200
-
-Response:
+Example: Calling ITS-Hub through Portkey
+------------------------------------------------------------
+ITS-Hub Response:
 The capital of England is **London**.
 
-============================================================
-TEST 2: ITS-Hub Through Portkey Gateway
-============================================================
-
-Request URL: http://localhost:8787/v1/chat/completions
-Custom Host: http://localhost:8108/v1
-Plugin: custom.itsHub
-Budget: 2
-Model: gpt-4.1
-Question: "what is the capital of england"
-
-✅ SUCCESS
-Status: 200
-
-Response:
-The capital of England is **London**.
-
-✅ Plugin Executed:
-   ID: custom.itsHub
-   Budget Added: 2
-   Transformed: true
-   Execution Time: 0ms
-
-============================================================
-TEST 3: Comparing Results
-============================================================
-
-Direct ITS-Hub Answer:
-The capital of England is **London**.
-
-Through Portkey Answer:
-The capital of England is **London**.
-
-✅ Both endpoints returned valid responses
-✅ Integration is working correctly!
-
-============================================================
-SUMMARY
-============================================================
-
-Test 1 (Direct ITS-Hub):     ✅ PASS
-Test 2 (Through Portkey):    ✅ PASS
-
-🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
-ALL TESTS PASSED! Integration is working perfectly!
-🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉
+Plugin executed: {
+  'before_request_hooks': [{
+    'verdict': True,
+    'id': 'input_guardrail_xxx',
+    'transformed': True,
+    'checks': [{
+      'data': {
+        'budget': 2,
+        'itsHubParametersAdded': True
+      },
+      'verdict': True,
+      'id': 'langfuse.itsHub',
+      'execution_time': 1,
+      'transformed': True,
+      'created_at': '2025-11-06T22:43:16.815Z',
+      'log': None,
+      'fail_on_error': False
+    }],
+    'feedback': None,
+    'execution_time': 1,
+    'async': False,
+    'type': 'mutator',
+    'created_at': '2025-11-06T22:43:16.815Z',
+    'deny': False
+  }],
+  'after_request_hooks': []
+}
 ```
 
 ## Troubleshooting
 
-### Test 1 Fails (Direct ITS-Hub)
+### Direct ITS-Hub Fails
 - Check if ITS-Hub is running: `curl http://localhost:8108/v1/chat/completions`
 - Verify the port is 8108
-- Make sure you configured ITS-Hub
+- Make sure you configured ITS-Hub with the `/configure` endpoint
 
-### Test 2 Fails (Through Portkey)
+### Through Portkey Fails
 - Check if Portkey Gateway is running: `curl http://localhost:8787/v1/chat/completions`
+- Ensure the `langfuse` plugin is enabled in `conf.json`
 - Rebuild plugins: `npm run build-plugins`
-- Restart Portkey Gateway
+- Restart Portkey Gateway: `npm run dev:node`
 
 ### Both Tests Fail
 - Check if you have the correct OpenAI API key in `.env`
 - Verify network connectivity
 - Check firewall settings
+- Ensure Python virtual environment is activated: `source .venv/bin/activate`
 
 ## Manual Testing
 
@@ -171,37 +154,32 @@ curl -X POST http://localhost:8108/v1/chat/completions \
   }' | jq .
 ```
 
-### Through Portkey Gateway
+### Through Portkey Gateway (Python)
 ```bash
-node -e '
-const http = require("http");
-const config = JSON.stringify({
-  provider: "openai",
-  api_key: "dummy-key",
-  custom_host: "http://localhost:8108/v1",
-  inputMutators: [{"custom.itsHub": {budget: 2}}]
-});
-const data = JSON.stringify({
-  model: "gpt-4.1",
-  messages: [{role: "user", content: "what is the capital of england"}]
-});
-const req = http.request({
-  hostname: "localhost",
-  port: 8787,
-  path: "/v1/chat/completions",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "x-portkey-config": config,
-    "Content-Length": data.length
-  }
-}, res => {
-  let d = "";
-  res.on("data", c => d += c);
-  res.on("end", () => console.log(JSON.stringify(JSON.parse(d), null, 2)));
-});
-req.write(data);
-req.end();
+source .venv/bin/activate
+python -c '
+from openai import OpenAI
+import json
+
+client = OpenAI(
+    base_url="http://localhost:8787/v1",
+    api_key="dummy-key"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4.1",
+    messages=[{"role": "user", "content": "what is the capital of england"}],
+    extra_headers={
+        "x-portkey-config": json.dumps({
+            "provider": "openai",
+            "api_key": "dummy-key",
+            "custom_host": "http://localhost:8108/v1",
+            "inputMutators": [{"langfuse.itsHub": {"budget": 2}}]
+        })
+    }
+)
+
+print(response.choices[0].message.content)
 '
 ```
 
@@ -210,7 +188,7 @@ req.end();
 1. ✅ ITS-Hub server is accessible and responding
 2. ✅ Portkey Gateway is running and accessible
 3. ✅ Plugin is correctly built and loaded
-4. ✅ `custom.itsHub` plugin executes successfully
+4. ✅ `langfuse.itsHub` plugin executes successfully
 5. ✅ `budget` parameter is added to requests
 6. ✅ Requests are routed to the correct ITS-Hub endpoint
 7. ✅ Responses are returned correctly through Portkey

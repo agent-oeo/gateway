@@ -29,7 +29,7 @@ def example_itshub():
                 "api_key": "dummy-key",
                 "custom_host": "http://localhost:8108/v1",
                 "inputMutators": [{
-                    "custom.itsHub": {
+                    "langfuse.itsHub": {
                         "budget": 2
                     }
                 }]
