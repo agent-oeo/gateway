@@ -1,0 +1,88 @@
+{
+  "id": "langfuse",
+  "name": "Langfuse",
+  "description": "Langfuse integration for dynamic prompt management",
+  "credentials": [],
+  "functions": [
+    {
+      "name": "Langfuse Prompt Injection",
+      "id": "promptInjection",
+      "type": "transformer",
+      "supportedHooks": ["beforeRequestHook"],
+      "description": [
+        {
+          "type": "subHeading",
+          "text": "Fetches and replaces system prompts from Langfuse prompt management"
+        }
+      ],
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "promptName": {
+            "type": "string",
+            "label": "Prompt Name",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "The name of the prompt to fetch from Langfuse"
+              }
+            ]
+          },
+          "promptLabel": {
+            "type": "string",
+            "label": "Prompt Label (Optional)",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "The label/version of the prompt to fetch. If not specified, uses the latest production version"
+              }
+            ]
+          },
+          "langfuseSecretKey": {
+            "type": "string",
+            "label": "Langfuse Secret Key",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Your Langfuse secret key (can also be set via environment variable LANGFUSE_SECRET_KEY)"
+              }
+            ]
+          },
+          "langfusePublicKey": {
+            "type": "string",
+            "label": "Langfuse Public Key",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Your Langfuse public key (can also be set via environment variable LANGFUSE_PUBLIC_KEY)"
+              }
+            ]
+          },
+          "langfuseHost": {
+            "type": "string",
+            "label": "Langfuse Host",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Langfuse API host URL (default: https://cloud.langfuse.com, can be overridden for self-hosted instances)"
+              }
+            ],
+            "default": "https://cloud.langfuse.com"
+          },
+          "createIfMissing": {
+            "type": "boolean",
+            "label": "Create System Message If Missing",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "If true, creates a new system message if none exists. If false, only replaces existing system message"
+              }
+            ],
+            "default": true
+          }
+        },
+        "required": ["promptName"]
+      }
+    }
+  ]
+}
