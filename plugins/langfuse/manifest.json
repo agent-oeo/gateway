@@ -1,12 +1,12 @@
 {
-  "id": "custom",
-  "name": "Custom",
-  "description": "Custom plugins for prompt optimization and management",
+  "id": "langfuse",
+  "name": "Langfuse",
+  "description": "Langfuse integration for dynamic prompt management",
   "credentials": [],
   "functions": [
     {
-      "name": "Langfuse Prompt Manager",
-      "id": "langfusePrompt",
+      "name": "Langfuse Prompt Injection",
+      "id": "promptInjection",
       "type": "transformer",
       "supportedHooks": ["beforeRequestHook"],
       "description": [

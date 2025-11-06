@@ -3,7 +3,7 @@
   "api_key": "sk-...",
   "inputMutators": [
     {
-      "custom.langfusePrompt": {
+      "langfuse.promptInjection": {
         "promptName": "my-system-prompt",
         "promptLabel": "production",
         "createIfMissing": true

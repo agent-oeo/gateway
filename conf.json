@@ -11,7 +11,7 @@
     "promptsecurity",
     "panw-prisma-airs",
     "walledai",
-    "custom"
+    "langfuse"
   ],
   "credentials": {
     "portkey": {
