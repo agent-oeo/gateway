@@ -83,6 +83,34 @@
         },
         "required": ["promptName"]
       }
+    },
+    {
+      "name": "ITS-Hub Integration",
+      "id": "itsHub",
+      "type": "transformer",
+      "supportedHooks": ["beforeRequestHook"],
+      "description": [
+        {
+          "type": "subHeading",
+          "text": "Adds ITS-Hub specific parameters (budget) to enable parallel inference with best-of-n sampling"
+        }
+      ],
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "budget": {
+            "type": "number",
+            "label": "Budget",
+            "description": [
+              {
+                "type": "subHeading",
+                "text": "Number of parallel inference threads to generate (must be a positive integer)"
+              }
+            ]
+          }
+        },
+        "required": ["budget"]
+      }
     }
   ]
 }

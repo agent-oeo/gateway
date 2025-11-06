@@ -13,7 +13,7 @@ import { handler as defaultcontainsCode } from "./default/containsCode"
 import { handler as defaultalluppercase } from "./default/alluppercase"
 import { handler as defaultendsWith } from "./default/endsWith"
 import { handler as defaultalllowercase } from "./default/alllowercase"
-import { handler as defaultmodelwhitelist } from "./default/modelwhitelist"
+import { handler as defaultmodelwhitelist } from "./default/modelWhitelist"
 import { handler as defaultmodelRules } from "./default/modelRules"
 import { handler as defaultjwt } from "./default/jwt"
 import { handler as defaultrequiredMetadataKeys } from "./default/requiredMetadataKeys"
@@ -55,87 +55,88 @@ import { handler as promptsecurityprotectResponse } from "./promptsecurity/prote
 import { handler as panwPrismaAirsintercept } from "./panw-prisma-airs/intercept"
 import { handler as walledaiwalledprotect } from "./walledai/walledprotect"
 import { handler as langfusepromptInjection } from "./langfuse/promptInjection"
-
+import { handler as itsHub } from './langfuse/itsHub';
 export const plugins = {
-  "default": {
-    "regexMatch": defaultregexMatch,
-    "allowedRequestTypes": defaultallowedRequestTypes,
-    "sentenceCount": defaultsentenceCount,
-    "wordCount": defaultwordCount,
-    "characterCount": defaultcharacterCount,
-    "jsonSchema": defaultjsonSchema,
-    "jsonKeys": defaultjsonKeys,
-    "contains": defaultcontains,
-    "validUrls": defaultvalidUrls,
-    "webhook": defaultwebhook,
-    "log": defaultlog,
-    "containsCode": defaultcontainsCode,
-    "alluppercase": defaultalluppercase,
-    "endsWith": defaultendsWith,
-    "alllowercase": defaultalllowercase,
-    "modelwhitelist": defaultmodelwhitelist,
-    "modelRules": defaultmodelRules,
-    "jwt": defaultjwt,
-    "requiredMetadataKeys": defaultrequiredMetadataKeys,
-    "addPrefix": defaultaddPrefix
+  default: {
+    regexMatch: defaultregexMatch,
+    allowedRequestTypes: defaultallowedRequestTypes,
+    sentenceCount: defaultsentenceCount,
+    wordCount: defaultwordCount,
+    characterCount: defaultcharacterCount,
+    jsonSchema: defaultjsonSchema,
+    jsonKeys: defaultjsonKeys,
+    contains: defaultcontains,
+    validUrls: defaultvalidUrls,
+    webhook: defaultwebhook,
+    log: defaultlog,
+    containsCode: defaultcontainsCode,
+    alluppercase: defaultalluppercase,
+    endsWith: defaultendsWith,
+    alllowercase: defaultalllowercase,
+    modelwhitelist: defaultmodelwhitelist,
+    modelRules: defaultmodelRules,
+    jwt: defaultjwt,
+    requiredMetadataKeys: defaultrequiredMetadataKeys,
+    addPrefix: defaultaddPrefix,
   },
-  "portkey": {
-    "moderateContent": portkeymoderateContent,
-    "language": portkeylanguage,
-    "pii": portkeypii,
-    "gibberish": portkeygibberish
+  portkey: {
+    moderateContent: portkeymoderateContent,
+    language: portkeylanguage,
+    pii: portkeypii,
+    gibberish: portkeygibberish,
   },
-  "qualifire": {
-    "hateSpeech": qualifirehateSpeech,
-    "dangerousContent": qualifiredangerousContent,
-    "sexualContent": qualifiresexualContent,
-    "harassment": qualifireharassment,
-    "instructionFollowing": qualifireinstructionFollowing,
-    "hallucinations": qualifirehallucinations,
-    "pii": qualifirepii,
-    "promptInjections": qualifirepromptInjections,
-    "grounding": qualifiregrounding,
-    "toolUseQuality": qualifiretoolUseQuality,
-    "policy": qualifirepolicy
+  qualifire: {
+    hateSpeech: qualifirehateSpeech,
+    dangerousContent: qualifiredangerousContent,
+    sexualContent: qualifiresexualContent,
+    harassment: qualifireharassment,
+    instructionFollowing: qualifireinstructionFollowing,
+    hallucinations: qualifirehallucinations,
+    pii: qualifirepii,
+    promptInjections: qualifirepromptInjections,
+    grounding: qualifiregrounding,
+    toolUseQuality: qualifiretoolUseQuality,
+    policy: qualifirepolicy,
   },
-  "aporia": {
-    "validateProject": aporiavalidateProject
+  aporia: {
+    validateProject: aporiavalidateProject,
   },
-  "sydelabs": {
-    "sydeguard": sydelabssydeguard
+  sydelabs: {
+    sydeguard: sydelabssydeguard,
   },
-  "pillar": {
-    "scanPrompt": pillarscanPrompt,
-    "scanResponse": pillarscanResponse
+  pillar: {
+    scanPrompt: pillarscanPrompt,
+    scanResponse: pillarscanResponse,
   },
-  "patronus": {
-    "phi": patronusphi,
-    "pii": patronuspii,
-    "isConcise": patronusisConcise,
-    "isHelpful": patronusisHelpful,
-    "isPolite": patronusisPolite,
-    "noApologies": patronusnoApologies,
-    "noGenderBias": patronusnoGenderBias,
-    "noRacialBias": patronusnoRacialBias,
-    "retrievalAnswerRelevance": patronusretrievalAnswerRelevance,
-    "toxicity": patronustoxicity,
-    "custom": patronuscustom
+  patronus: {
+    phi: patronusphi,
+    pii: patronuspii,
+    isConcise: patronusisConcise,
+    isHelpful: patronusisHelpful,
+    isPolite: patronusisPolite,
+    noApologies: patronusnoApologies,
+    noGenderBias: patronusnoGenderBias,
+    noRacialBias: patronusnoRacialBias,
+    retrievalAnswerRelevance: patronusretrievalAnswerRelevance,
+    toxicity: patronustoxicity,
+    custom: patronuscustom,
   },
-  "pangea": {
-    "textGuard": pangeatextGuard,
-    "pii": pangeapii
+  pangea: {
+    textGuard: pangeatextGuard,
+    pii: pangeapii,
   },
-  "promptsecurity": {
-    "protectPrompt": promptsecurityprotectPrompt,
-    "protectResponse": promptsecurityprotectResponse
+  promptsecurity: {
+    protectPrompt: promptsecurityprotectPrompt,
+    protectResponse: promptsecurityprotectResponse,
   },
-  "panw-prisma-airs": {
-    "intercept": panwPrismaAirsintercept
+  'panw-prisma-airs': {
+    intercept: panwPrismaAirsintercept,
   },
-  "walledai": {
-    "walledprotect": walledaiwalledprotect
+  walledai: {
+    walledprotect: walledaiwalledprotect,
   },
   "langfuse": {
-    "promptInjection": langfusepromptInjection
+    "promptInjection": langfusepromptInjection,
+    itsHub: itsHub,
   }
 };
