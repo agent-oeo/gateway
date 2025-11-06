@@ -55,6 +55,7 @@ import { handler as promptsecurityprotectResponse } from "./promptsecurity/prote
 import { handler as panwPrismaAirsintercept } from "./panw-prisma-airs/intercept"
 import { handler as walledaiwalledprotect } from "./walledai/walledprotect"
 import { handler as customlangfusePrompt } from "./custom/langfusePrompt"
+import { handler as customitsHub } from "./custom/itsHub"
 
 export const plugins = {
   "default": {
@@ -136,6 +137,7 @@ export const plugins = {
     "walledprotect": walledaiwalledprotect
   },
   "custom": {
-    "langfusePrompt": customlangfusePrompt
+    "langfusePrompt": customlangfusePrompt,
+    "itsHub": customitsHub
   }
 };
