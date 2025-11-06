@@ -44,12 +44,12 @@ function makeRequest(options, data) {
         try {
           resolve({
             statusCode: res.statusCode,
-            data: JSON.parse(responseData)
+            data: JSON.parse(responseData),
           });
         } catch (e) {
           resolve({
             statusCode: res.statusCode,
-            data: responseData
+            data: responseData,
           });
         }
       });
@@ -74,7 +74,7 @@ async function testDirectITSHub() {
   const data = JSON.stringify({
     model: TEST_MODEL,
     messages: [{ role: 'user', content: TEST_QUESTION }],
-    budget: TEST_BUDGET
+    budget: TEST_BUDGET,
   });
 
   const options = {
@@ -84,8 +84,8 @@ async function testDirectITSHub() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length
-    }
+      'Content-Length': data.length,
+    },
   };
 
   try {
@@ -124,19 +124,21 @@ async function testThroughPortkey() {
   log('='.repeat(60), colors.cyan);
 
   const config = JSON.stringify({
-    provider: "openai",
-    api_key: "dummy-key",
-    custom_host: "http://localhost:8108/v1",
-    inputMutators: [{
-      "custom.itsHub": {
-        budget: TEST_BUDGET
-      }
-    }]
+    provider: 'openai',
+    api_key: 'dummy-key',
+    custom_host: 'http://localhost:8108/v1',
+    inputMutators: [
+      {
+        'custom.itsHub': {
+          budget: TEST_BUDGET,
+        },
+      },
+    ],
   });
 
   const data = JSON.stringify({
     model: TEST_MODEL,
-    messages: [{ role: 'user', content: TEST_QUESTION }]
+    messages: [{ role: 'user', content: TEST_QUESTION }],
   });
 
   const options = {
@@ -147,8 +149,8 @@ async function testThroughPortkey() {
     headers: {
       'Content-Type': 'application/json',
       'x-portkey-config': config,
-      'Content-Length': data.length
-    }
+      'Content-Length': data.length,
+    },
   };
 
   try {
@@ -171,16 +173,24 @@ async function testThroughPortkey() {
       }
 
       // Check plugin execution
-      if (response.data.hook_results && response.data.hook_results.before_request_hooks) {
+      if (
+        response.data.hook_results &&
+        response.data.hook_results.before_request_hooks
+      ) {
         const itsHubHook = response.data.hook_results.before_request_hooks[0];
         if (itsHubHook && itsHubHook.checks) {
-          const itsHubCheck = itsHubHook.checks.find(c => c.id === 'custom.itsHub');
+          const itsHubCheck = itsHubHook.checks.find(
+            (c) => c.id === 'custom.itsHub'
+          );
           if (itsHubCheck) {
             log(`\n✅ Plugin Executed:`, colors.green);
             log(`   ID: ${itsHubCheck.id}`, colors.green);
             log(`   Budget Added: ${itsHubCheck.data.budget}`, colors.green);
             log(`   Transformed: ${itsHubCheck.transformed}`, colors.green);
-            log(`   Execution Time: ${itsHubCheck.execution_time}ms`, colors.green);
+            log(
+              `   Execution Time: ${itsHubCheck.execution_time}ms`,
+              colors.green
+            );
           }
         }
       }
@@ -193,22 +203,27 @@ async function testThroughPortkey() {
     }
   } catch (error) {
     log(`\n❌ ERROR: ${error.message}`, colors.red);
-    log('Make sure Portkey Gateway is running on http://localhost:8787', colors.yellow);
+    log(
+      'Make sure Portkey Gateway is running on http://localhost:8787',
+      colors.yellow
+    );
     return { success: false, error: error.message };
   }
 }
 
-
 async function main() {
   log('\n' + '█'.repeat(60), colors.bright + colors.cyan);
-  log('  ITS-Hub + Portkey Gateway Integration Test', colors.bright + colors.cyan);
+  log(
+    '  ITS-Hub + Portkey Gateway Integration Test',
+    colors.bright + colors.cyan
+  );
   log('█'.repeat(60) + '\n', colors.bright + colors.cyan);
 
   // Test 1: Direct ITS-Hub
   const directResult = await testDirectITSHub();
 
   // Wait a moment
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   // Test 2: Through Portkey
   const portkeyResult = await testThroughPortkey();
@@ -228,17 +243,29 @@ async function main() {
 
   if (directResult.success && portkeyResult.success) {
     log(`\n${'🎉'.repeat(20)}`, colors.bright + colors.green);
-    log('ALL TESTS PASSED! Integration is working perfectly!', colors.bright + colors.green);
+    log(
+      'ALL TESTS PASSED! Integration is working perfectly!',
+      colors.bright + colors.green
+    );
     log('🎉'.repeat(20) + '\n', colors.bright + colors.green);
     process.exit(0);
   } else {
-    log(`\n⚠️  Some tests failed. Please check the output above.`, colors.yellow);
+    log(
+      `\n⚠️  Some tests failed. Please check the output above.`,
+      colors.yellow
+    );
     log('\nTroubleshooting:', colors.yellow);
     if (!directResult.success) {
-      log('- Ensure ITS-Hub is running: npm run iaas-start (or equivalent)', colors.yellow);
+      log(
+        '- Ensure ITS-Hub is running: npm run iaas-start (or equivalent)',
+        colors.yellow
+      );
     }
     if (!portkeyResult.success) {
-      log('- Ensure Portkey Gateway is running: npm run dev:node', colors.yellow);
+      log(
+        '- Ensure Portkey Gateway is running: npm run dev:node',
+        colors.yellow
+      );
       log('- Ensure plugins are built: npm run build-plugins', colors.yellow);
     }
     log('');
@@ -247,7 +274,7 @@ async function main() {
 }
 
 // Run tests
-main().catch(error => {
+main().catch((error) => {
   log(`\n❌ Unexpected error: ${error.message}`, colors.red);
   console.error(error);
   process.exit(1);

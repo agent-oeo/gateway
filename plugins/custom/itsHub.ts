@@ -72,7 +72,9 @@ export const handler: PluginHandler = async (
     // Only process before request for chat completion/completions/messages
     if (
       eventType !== 'beforeRequestHook' ||
-      !['chatComplete', 'complete', 'messages'].includes(context.requestType || '')
+      !['chatComplete', 'complete', 'messages'].includes(
+        context.requestType || ''
+      )
     ) {
       return {
         error: null,
