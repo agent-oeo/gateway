@@ -26,6 +26,13 @@ Before running the test, make sure both services are running:
 
 ### 1. Start ITS-Hub Server (Terminal 1)
 
+Install its-hub
+
+```bash
+# Install its-hub
+pip install its-hub
+```
+
 ```bash
 # From your ITS-Hub directory
 uv run its-iaas --host 0.0.0.0 --port 8108
