@@ -30,7 +30,9 @@ for (const plugin of pluginsEnabled) {
 
   funcStrings[plugin] = [];
   for (let key in funcs[plugin]) {
-    funcStrings[plugin].push(`"${key}": ${toCamelCase(manifest.id)}${funcs[plugin][key]}`);
+    funcStrings[plugin].push(
+      `"${key}": ${toCamelCase(manifest.id)}${funcs[plugin][key]}`
+    );
   }
 }
 

@@ -1,0 +1,25 @@
+{
+  "id": "tool-observer",
+  "name": "Tool Observer",
+  "description": "Observes and logs tool specifications from chat completion requests",
+  "credentials": [],
+  "functions": [
+    {
+      "name": "Observe Tools",
+      "id": "observeTools",
+      "type": "guardrail",
+      "supportedHooks": ["beforeRequestHook"],
+      "description": [
+        {
+          "type": "subHeading",
+          "text": "Extracts and returns complete tool specifications (name, description, parameters) from chat completion requests in the response metadata. Always allows requests to proceed."
+        }
+      ],
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

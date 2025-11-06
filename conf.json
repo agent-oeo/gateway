@@ -11,7 +11,8 @@
     "promptsecurity",
     "panw-prisma-airs",
     "walledai",
-    "skills-handbook"
+    "skills-handbook",
+    "tool-observer"
   ],
   "credentials": {
     "portkey": {
